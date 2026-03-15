@@ -6,7 +6,13 @@
   "url": "/",
   "enableServer": true,
   "enableNativeAPI": true,
-  "nativeAllowList": ["app.*", "filesystem.*", "os.*"],
+  "nativeAllowList": [
+    "app.*",
+    "filesystem.*",
+    "os.*",
+    "extensions.*",
+    "events.*"
+  ],
   "modes": {
     "window": {
       "title": "myapp",
@@ -31,5 +37,12 @@
       "devCommand": "npm run dev",
       "buildCommand": "npm run build"
     }
-  }
+  },
+  "enableExtensions": true,
+  "extensions": [
+    {
+      "id": "js.neutralino.zipper",
+      "command": "node ${NL_PATH}/extensions/zipper/main.js"
+    }
+  ]
 }
