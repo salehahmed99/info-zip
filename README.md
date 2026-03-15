@@ -1,71 +1,120 @@
-# ⚛️ Neu-Pack
+# 📦 Neu-Pack - Neutralinojs Project Bundler
 
-A high-performance, lightweight desktop utility for analyzing and zipping project folders. Built with **Neutralinojs**, **React**, and **TypeScript**, it features a background **Node.js Extension** for non-blocking file compression.
+A high-performance, **TypeScript-powered** desktop utility built with **Neutralinojs**, **Vite**, and **React**. Neu-Pack demonstrates advanced framework architecture by offloading heavy I/O tasks to a **Node.js Extension** while maintaining a fluid, animated UI.
 
-## ✨ Key Features
+## ✨ Features
 
-- **⚡ Native Performance:** Leverages Neutralino's lightweight core to maintain a tiny memory footprint compared to Electron.
-- **🔍 Deep Scan Engine:** Recursively analyzes directory structures to provide accurate file counts and total project size before zipping.
-- **📂 Native Dialogs:** Seamless integration with the OS file explorer for project selection.
-- **🔄 Real-time Progress:** A bi-directional communication bridge between the UI and the Node.js extension provides live percentage updates during compression.
-- **🛡️ Robust File Handling:** Uses a `.tmp` atomic-write strategy to ensure zip files are never corrupted if a process is interrupted.
-- **🎨 Modern UI/UX:** Built with Tailwind CSS and Framer Motion for smooth, spring-based animations and "Developer Tool" aesthetics.
+- **Deep Scan Engine** - Recursively analyzes directory structures to calculate total file counts and project size.
+- **Real-time Progress** - Bi-directional communication provides live percentage updates during zipping.
+- **Atomic Write Strategy** - Uses `.tmp` file streaming to ensure zip archives are never corrupted if a process is interrupted.
+- **Native OS Integration** - Seamlessly triggers native folder selection dialogs via the OS API.
+- **Process Control** - Ability to abort active zipping operations and clean up temporary artifacts.
+- **Developer UI** - A sleek "Carbon" dark-mode aesthetic with smooth Framer Motion transitions and spring physics.
+- **Three-Tier Architecture** - Clean separation between UI (React), Bridge (Neutralino), and Worker (Node.js).
 
-## 🏗️ Architecture
+## ✔️ ScreenShots - UI :
 
-Neu-Pack uses a three-tier architecture to ensure the UI remains responsive even during heavy I/O tasks:
+<img src="https://github.com/salehahmed99/neu-pack/blob/main/readme-assets/1.png"  alt="1" />
+<img src="https://github.com/salehahmed99/neu-pack/blob/main/readme-assets/2.png"  alt="2" />
+<img src="https://github.com/salehahmed99/neu-pack/blob/main/readme-assets/3.png"  alt="3" />
+<img src="https://github.com/salehahmed99/neu-pack/blob/main/readme-assets/4.png"  alt="4" />
 
-1. **Frontend (React + Vite):** Handles the state management, animations, and recursive directory calculations.
-2. **Native Bridge (Neutralino API):** Provides access to the filesystem, native OS dialogs, and system events.
-3. **Background Worker (Node.js Extension):** Uses the `archiver` stream library to handle zipping in a separate process, preventing the main UI thread from freezing.
+## 🧠 How It's Built Using Neutralinojs APIs
 
-## 🛠️ Installation
+### 1. Filesystem API (`Neutralino.filesystem`)
 
-### 1. Prerequisites
+Used for recursive directory traversal and file metadata retrieval:
 
-Ensure you have the [Neutralino CLI](https://www.google.com/search?q=https://neutralino.js.org/docs/cli/setup) installed:
+```typescript
+// Get metadata for a specific path
+const stats = await filesystem.getStats(entry.path);
 
-```bash
-npm install -g @neutralinojs/neu
+// Read directory contents
+const entries = await filesystem.readDirectory(folderPath);
+```
+
+### 2. OS API (`Neutralino.os`)
+
+Handles the native "Select Folder" interaction:
+
+```typescript
+// Open native OS folder picker
+const folderPath = await os.showFolderDialog("Select a project folder");
+```
+
+### 3. Extensions API (`Neutralino.extensions`)
+
+The core "Flex" of the app — offloading zipping to a background Node.js process:
+
+```typescript
+// Dispatching the task to the Node.js extension
+await extensions.dispatch("js.neutralino.zipper", "zipFolder", {
+  path: folderData.path,
+  fileCount: folderData.fileCount,
+});
+```
+
+### 4. Events API (`Neutralino.events`)
+
+Handles real-time communication between the Node.js Extension and the React UI:
+
+```typescript
+// Listen for progress updates broadcasted by the extension
+events.on("zipProgress", (event) => {
+  setZipProgress(event.detail.percentage);
+});
+```
+
+## 🏗️ Project Structure
+
+```text
+neu-pack/
+├── extensions/
+│   └── zipper/
+│       ├── main.js         # Node.js Background Worker
+│       └── package.json    # Extension dependencies (archiver, ws)
+├── react-src/
+│   ├── src/
+│   │   ├── App.tsx         # Main UI & Logic
+│   │   └── main.tsx        # React Entry point
+│   ├── vite.config.ts      # Vite HMR Configuration
+│   └── tailwind.config.cjs # Styling Configuration
+├── bin/                    # Neutralino native binaries
+├── neutralino.config.json  # App & Extension permissions
+└── README.md
 
 ```
 
-### 2. Setup
+## 🚀 Getting Started
 
-Clone the repository and install dependencies for both the frontend and the extension:
+### Prerequisites
+
+- [Neutralinojs CLI](https://www.google.com/search?q=https://neutralino.js.org/docs/cli/setup) (`npm install -g @neutralinojs/neu`)
+
+### Installation & Running
 
 ```bash
-# Install root dependencies
-npm install
-
-# Install extension dependencies
+# 1. Install extension dependencies
 cd extensions/zipper && npm install
 
-# Install React dependencies
+# 2. Install React dependencies
 cd ../../react-src && npm install
 
-```
-
-## 🚀 Development
-
-To start the application with Hot Module Replacement (HMR):
-
-```bash
+# 3. Run the application
+cd ../..
 neu run
 
 ```
 
-## 📦 Building for Production
+## 📊 Neutralinojs APIs Configuration
 
-To bundle the application for distribution:
+The app requires the following permissions in `neutralino.config.json`:
 
-```bash
-neu build
+```json
+"nativeAllowList": ["app.*", "extensions.*", "filesystem.*", "events.*", "os.*", "window.*"]
 
 ```
 
-The binaries for Windows, Mac, and Linux will be generated in the `dist/` folder.
+## 📝 License
 
-## 📜 License
-
-MIT
+MIT License - Built with ❤️ for **GSoC 2026**.
