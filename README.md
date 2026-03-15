@@ -12,7 +12,7 @@ A high-performance, **TypeScript-powered** desktop utility built with **Neutrali
 - **Developer UI** - A sleek "Carbon" dark-mode aesthetic with smooth Framer Motion transitions and spring physics.
 - **Three-Tier Architecture** - Clean separation between UI (React), Bridge (Neutralino), and Worker (Node.js).
 
-## ✔️ ScreenShots - UI :
+## 🎨 ScreenShots - UI :
 
 <img src="https://github.com/salehahmed99/neu-pack/blob/main/readme-assets/1.png"  alt="1" />
 <img src="https://github.com/salehahmed99/neu-pack/blob/main/readme-assets/2.png"  alt="2" />
@@ -65,56 +65,24 @@ events.on("zipProgress", (event) => {
 });
 ```
 
-## 🏗️ Project Structure
-
-```text
-neu-pack/
-├── extensions/
-│   └── zipper/
-│       ├── main.js         # Node.js Background Worker
-│       └── package.json    # Extension dependencies (archiver, ws)
-├── react-src/
-│   ├── src/
-│   │   ├── App.tsx         # Main UI & Logic
-│   │   └── main.tsx        # React Entry point
-│   ├── vite.config.ts      # Vite HMR Configuration
-│   └── tailwind.config.cjs # Styling Configuration
-├── bin/                    # Neutralino native binaries
-├── neutralino.config.json  # App & Extension permissions
-└── README.md
-
-```
-
 ## 🚀 Getting Started
 
-### Prerequisites
-
-- [Neutralinojs CLI](https://www.google.com/search?q=https://neutralino.js.org/docs/cli/setup) (`npm install -g @neutralinojs/neu`)
-
-### Installation & Running
-
 ```bash
-# 1. Install extension dependencies
+# 1. Install Neutralinojs CLI
+npm install -g @neutralinojs/neu
+
+# 2. Install extension dependencies
 cd extensions/zipper && npm install
 
-# 2. Install React dependencies
+# 3. Install React dependencies
 cd ../../react-src && npm install
 
-# 3. Run the application
+# 4. Run the application
 cd ../..
 neu run
 
 ```
 
-## 📊 Neutralinojs APIs Configuration
-
-The app requires the following permissions in `neutralino.config.json`:
-
-```json
-"nativeAllowList": ["app.*", "extensions.*", "filesystem.*", "events.*", "os.*", "window.*"]
-
-```
-
 ## 📝 License
 
-MIT License - Built with ❤️ for **GSoC 2026**.
+MIT License
