@@ -5,8 +5,8 @@ A lightweight, cross-platform desktop app built with **Neutralinojs** designed t
 ## ✨ Features
 
 - **Deep Scan Engine** - Recursively analyzes directory structures to calculate total file counts and project size.
-- **WebSocket Communication** - Real-time, bi-directional events between the React UI and the background extension for live updates.
 - **Native API Extension** - Extends the Neutralinojs core with file compression capabilities (not available in the standard API).
+- **WebSocket Communication** - Real-time, bi-directional events between the React UI and the background extension for live updates.
 - **Atomic Write Strategy** - Uses `.tmp` file streaming to ensure zip archives are never corrupted if a process is interrupted.
 - **Process Control** - Ability to abort active zipping operations and clean up temporary artifacts immediately.
 - **Three-Tier Architecture** - High-level separation between UI (React), Bridge (Neutralino), and Native Logic (Node.js).
